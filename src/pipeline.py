@@ -1,9 +1,10 @@
-from loaders import load_fineweb, load_stack
+from loaders import load_fineweb, load_stack, load_wikipedia
 
 
 def run_pipeline(n_docs: int = None, streaming: bool = True):
     fineweb_dataset = load_fineweb(n_docs=n_docs, streaming=streaming)
     stack_dataset = load_stack(n_docs=n_docs, streaming=streaming)
+    wikipedia_dataset = load_wikipedia(n_docs=n_docs, streaming=streaming)
 
     # clean
 

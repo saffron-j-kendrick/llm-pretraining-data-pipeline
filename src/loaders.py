@@ -19,3 +19,13 @@ def load_stack(n_docs: int = None, streaming: bool = True):
         dataset = dataset.take(n_docs)
 
     return dataset
+
+
+def load_wikipedia(n_docs: int = None, streaming: bool = True):
+
+    dataset = load_dataset("wikimedia/wikipedia","20231101.en", split="train", streaming=streaming)
+
+    if n_docs is not None:
+        dataset = dataset.take(n_docs)
+
+    return dataset
