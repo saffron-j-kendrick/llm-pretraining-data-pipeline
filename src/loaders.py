@@ -10,17 +10,6 @@ def load_fineweb(n_docs: int = None, streaming: bool = True):
 
     return dataset
 
-
-def load_stack(n_docs: int = None, streaming: bool = True):
-
-    dataset = load_dataset("bigcode/the-stack", data_dir="data/python", split="train", streaming=streaming)
-
-    if n_docs is not None:
-        dataset = dataset.take(n_docs)
-
-    return dataset
-
-
 def load_wikipedia(n_docs: int = None, streaming: bool = True):
 
     dataset = load_dataset("wikimedia/wikipedia","20231101.en", split="train", streaming=streaming)
@@ -29,3 +18,17 @@ def load_wikipedia(n_docs: int = None, streaming: bool = True):
         dataset = dataset.take(n_docs)
 
     return dataset
+
+
+# def load_stack(n_docs: int = None, streaming: bool = True):
+
+#     dataset = load_dataset("bigcode/the-stack", data_dir="data/python", split="train", streaming=streaming)
+
+#     if n_docs is not None:
+#         dataset = dataset.take(n_docs)
+
+#     return dataset
+
+dataset = load_fineweb(1, streaming=True)
+for document in dataset.take(1):
+            print(document)
