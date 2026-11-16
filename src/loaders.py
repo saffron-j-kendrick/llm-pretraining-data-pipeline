@@ -29,6 +29,7 @@ def load_wikipedia(n_docs: int | None = None, streaming: bool = True):
 
 #     return dataset
 
-# dataset = load_fineweb(1, streaming=True)
-# for document in dataset.take(1):
+# dataset = load_fineweb(5, streaming=True)
+
+# for document in dataset.take(5):
 #             print(document)

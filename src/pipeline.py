@@ -1,5 +1,5 @@
 from loaders import load_fineweb, load_wikipedia
-from cleaning import *
+from cleaning import clean_document
 from schema import from_fineweb, from_wikipedia
 
 def convert_to_doc(dataset, convert):
@@ -13,7 +13,11 @@ def run_pipeline(n_docs: int = None, streaming: bool = True):
 
     # clean
     
-
+    for _, dataset in datasets.items():
+        for doc in dataset:
+            clean_document(doc)
+            print(doc)
+            
 
     # filter
 
@@ -24,8 +28,8 @@ def run_pipeline(n_docs: int = None, streaming: bool = True):
     return datasets
 
 if __name__ == "__main__":
-    datasets = run_pipeline(n_docs = 1, streaming = True)
-    for source, dataset in datasets.items():
-        print(f"{source}: ")
-        for doc in dataset.take(1):
-            print(doc)
+    datasets = run_pipeline(n_docs = 2, streaming = True)
+    # for source, dataset in datasets.items():
+    #     print(f"{source}: ")
+    #     for doc in dataset.take(1):
+    #         print(doc)
