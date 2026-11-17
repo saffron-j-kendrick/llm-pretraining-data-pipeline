@@ -3,12 +3,10 @@ import nltk
 import string
 import re
 import unicodedata
-
+from bs4 import BeautifulSoup
 
 
 def remove_control_chars(row: dict):
-    # mapping = dict.fromkeys(range(32))
-    # return row["text"].translate(mapping)
     text = row["text"]
     text = ''.join(char for char in text if unicodedata.category(char) != "Cc" or char in "\n\t")
     row["text"] = text
@@ -37,13 +35,29 @@ def normalise_unicode(row:dict):
 
 
 def strip_wikipedia_extras(row: dict):
+    # EXTRAS_PATTERNS = {
+    #     r"^See also\s*$"
+    #     r"^References\s*$"
+    #     r"^Further reading\s*$"
+    #     r"^External links\s*$"
+    #     r"^Notes\s*$"
+    #     r"^Bibliography\s*$"
+    # }
+
     text = row["text"]
-    row["text"] = text
+    
+    SECTION_PATTERN = re.compile(r"^(See also|References|Further reading|External links)\s*$", re.MULTILINE, re.IGNORECASE)
+    match = SECTION_PATTERN.search(text)
+
+    if match:
+        text = text[:match.start()] 
+
+    row["text"] = text.strip()
     return row
 
 
 def remove_boilerplates(row: dict):
-    """ THIS IS A VERY CONSERVATIVE APPROACH FOR NOW """
+    """ matches exact re patterns """
     BOILERPLATE_PATTERNS = [
         r"^viewing single post from:",
         r"^accept all cookies$",
@@ -68,13 +82,37 @@ def remove_boilerplates(row: dict):
 
 # optional
 
+
 def remove_empty_headings(row: dict):
+    # more useful for markdowns
+    HEADING_PATTERN = re.compile(r"^[ \t]{0,3}#{1,6}[ \t]+\S.*$")
+
     text = row["text"]
-    row["text"] = text
+    lines = text.splitlines()
+
+    clean_lines = []
+    for i, line in enumerate(lines):
+        if HEADING_PATTERN.match(line):
+            j = i+1
+            while j < len(lines) and not lines[j].strip():
+                j +=1
+            
+            if j == len(lines):
+                continue
+            
+            if HEADING_PATTERN.match(lines[j]):
+                continue
+        clean_lines.append(line)
+    row["text"] = '\n'.join(clean_lines)
     return row
+
 
 def remove_html(row: dict):
     text = row["text"]
+    html_parse = BeautifulSoup(text, 'html.parser')
+    for tag in html_parse(["script", "style", "noscript"]):
+        tag.decompose()
+    text = html_parse.get_text(separator="\n")
     row["text"] = text
     return row
 
