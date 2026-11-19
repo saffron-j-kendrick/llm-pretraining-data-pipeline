@@ -1,6 +1,9 @@
 from loaders import load_fineweb, load_wikipedia
 from cleaning import clean_document
 from schema import from_fineweb, from_wikipedia
+from deduplicate import exact_dedup, near_dedup
+from tokenise import tokenise_with_nltk, tokenise_with_llms
+
 
 def convert_to_doc(dataset, convert):
     return dataset.map(convert, remove_columns = dataset.column_names)
@@ -13,14 +16,6 @@ def run_pipeline(n_docs: int = None, streaming: bool = True):
 
     # clean
     
-    for _, dataset in datasets.items():
-        for doc in dataset:
-            clean_document(doc)
-            print(doc)
-            
-
-    # filter
-
     # deduplicate
 
     # tokenise
