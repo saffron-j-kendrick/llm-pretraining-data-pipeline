@@ -1,4 +1,4 @@
-from src.cleaning import remove_control_chars, remove_invisble_chars, normalise_unicode
+from src.cleaning import remove_control_chars, remove_invisible_chars, normalise_unicode, normalise_whitespace
 
 
 def test_remove_control_chars():
