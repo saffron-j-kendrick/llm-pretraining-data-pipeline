@@ -12,10 +12,10 @@ def exact_dedup(documents):
     seen_hashes = set()
     for row in documents:
         doc_hash = hash_normalising(row["text"])
-        doc_hash = hashing(text)
+        doc_hash = hashing(doc_hash)
 
         if doc_hash not in seen_hashes:
-            seen_hases.add(doc_hash)
+            seen_hashes.add(doc_hash)
             yield row
 
 
@@ -31,27 +31,27 @@ def jaccard_sim(shingles_a, shingles_b):
     union = len(shingles_a.union(shingles_b))
     jacc_sim = intersection / union
 
-    if union = 0:
+    if union == 0:
         return 0.0
     return jacc_sim
 
 
-def min_hash(text: str, n : int = 5, n_permutations : int = 128):
+def min_hash(text: str, n : int = 5, num_perm : int = 128):
     shingles = create_shingles(text, n)
 
     if not shingles:
         return None
     
-    mh_sig = MinHash(n_permutations = n_permutations)
+    mh_sig = MinHash(num_perm = num_perm)
 
     for shingle in shingles:
         mh_sig.update(" ".join(shingle).encode("utf-8"))
 
     return mh_sig
 
-def near_dedup(documents, threshold : float = 0.8, n : int = 5, n_permutations : int = 128):
+def near_dedup(documents, threshold : float = 0.8, n : int = 5, num_perm : int = 128):
 
-    lsh = MinHashLSH(threshold = threshold, n_permutations = n_permutations)
+    lsh = MinHashLSH(threshold = threshold, num_perm = num_perm)
 
 
     stored_shingles = {}
@@ -65,7 +65,7 @@ def near_dedup(documents, threshold : float = 0.8, n : int = 5, n_permutations :
             yield row
             continue
         
-        mh_signature = min_hash(text, n, n_permutations)
+        mh_signature = min_hash(text, n, num_perm)
 
         # this is where we find near duplicates using LSH 
 
