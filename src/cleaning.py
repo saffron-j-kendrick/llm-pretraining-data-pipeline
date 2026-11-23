@@ -46,7 +46,7 @@ def strip_wikipedia_extras(row: dict):
 
     text = row["text"]
     
-    SECTION_PATTERN = re.compile(r"^(See also|References|Further reading|External links)\s*$", re.MULTILINE, re.IGNORECASE)
+    SECTION_PATTERN = re.compile(r"^(See also|References|Further reading|External links)\s*$", re.MULTILINE | re.IGNORECASE)
     match = SECTION_PATTERN.search(text)
 
     if match:

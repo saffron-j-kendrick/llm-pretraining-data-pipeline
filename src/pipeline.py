@@ -3,6 +3,9 @@ from .cleaning import clean_document
 from .schema import from_fineweb, from_wikipedia
 from .deduplicate import exact_dedup, near_dedup
 from .tokenise import tokenise_with_nltk, tokenise_with_llms
+from .statistics import document_summary
+
+from itertools import chain
 import tiktoken
 
 # def convert_to_doc(dataset, convert):
@@ -26,7 +29,7 @@ def run_pipeline(n_docs: int | None = None, streaming: bool = True, use_near_ded
 
     # clean
     
-    documents = clean_document(row for row in documents)
+    documents = (clean_document(row) for row in documents)
     
     
     # deduplicate
