@@ -181,4 +181,6 @@ Generator-based processing reduces the need to load complete datasets into memor
 
 **Initial implementation**
 
-The core preprocessing modules have been developed. Further work will focus on testing, evaluating preprocessing quality, improving configurability, and adding dataset export capabilities.
+The core preprocessing modules have been developed. 
+
+Further updates to the repository will focus on testing, evaluating preprocessing quality, improving configurability, and adding dataset export capabilities.
